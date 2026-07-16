@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 64" role="img" aria-label="ABC Fitness">
+  <g fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 43 30 11 48 43" />
+    <path d="M21 30h20" />
+    <path d="M54 13h22c8 0 13 5 13 12 0 6-3 10-9 12 7 1 11 5 11 12 0 8-6 13-15 13H54V13Z" />
+    <path d="M58 35c-4-7-11-10-19-7-10 4-15 13-12 23 3 9 12 13 22 10 6-2 10-5 14-11" />
+  </g>
+  <text x="103" y="43" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="900" letter-spacing="-1">FITNESS</text>
+</svg>
