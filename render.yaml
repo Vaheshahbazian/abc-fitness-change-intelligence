@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: abc-fitness-change-intelligence
+    runtime: python
+    plan: free
+    buildCommand: ""
+    startCommand: python app.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9

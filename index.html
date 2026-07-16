@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ABC Fitness Change Intelligence</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar brand-hero">
+        <div class="brand-hero-art" aria-hidden="true">
+          <span class="brand-track brand-track-one"></span>
+          <span class="brand-track brand-track-two"></span>
+          <span class="brand-arc"></span>
+        </div>
+        <div class="brand-hero-content">
+          <div class="brand-top-row">
+            <div class="brand-lockup" aria-label="ABC Fitness">
+              <img src="/abc-fitness-logo.svg" alt="ABC Fitness" class="brand-logo" />
+            </div>
+            <div class="topbar-actions">
+              <button id="exportPdf" class="ghost-button" type="button" title="Export executive PowerPoint deck" disabled>
+                <span aria-hidden="true">PPTX</span>
+                <span>Exec Deck</span>
+              </button>
+              <button id="exportReport" class="ghost-button" type="button" title="Export report as CSV" disabled>
+            <span aria-hidden="true">↓</span>
+                <span>Export</span>
+              </button>
+              <button id="resetData" class="ghost-button" type="button" title="Clear current file" disabled>
+            <span aria-hidden="true">×</span>
+                <span>Clear</span>
+              </button>
+            </div>
+          </div>
+          <div class="brand-bottom-row">
+            <div>
+              <p class="eyebrow">Change Portfolio</p>
+              <h1>Change Intelligence</h1>
+            </div>
+            <div class="brand-suite" aria-label="ABC Fitness product family">
+              <span class="suite-primary"><img src="/abc-fitness-logo.svg" alt="ABC Fitness" class="suite-logo" /></span>
+              <span class="suite-divider" aria-hidden="true"></span>
+              <span class="suite-product suite-purple"><span class="abc-mini" aria-hidden="true">ABC</span> evo</span>
+              <span class="suite-product suite-teal"><span class="abc-mini" aria-hidden="true">ABC</span> GLOFOX</span>
+              <span class="suite-product suite-blue"><span class="abc-mini" aria-hidden="true">ABC</span> IGNITE</span>
+              <span class="suite-product suite-yellow"><span class="abc-mini" aria-hidden="true">ABC</span> TRAINERIZE</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="workspace-grid">
+        <aside class="control-panel">
+          <form id="uploadForm" class="upload-zone">
+            <input id="fileInput" type="file" accept=".csv,.tsv,.txt,.xlsx,.xlsm" />
+            <label for="fileInput" class="upload-label">
+              <span class="upload-icon" aria-hidden="true">↑</span>
+              <span class="upload-title">Upload change file</span>
+              <span id="fileMeta" class="upload-meta">CSV, TSV, or XLSX</span>
+            </label>
+          </form>
+
+          <div id="mappingPanel" class="mapping-panel is-disabled">
+            <div class="panel-heading">
+              <h2>Column Mapping</h2>
+              <span id="rowCount">Spreadsheet columns</span>
+            </div>
+            <label>
+              Team
+              <select id="teamColumn"></select>
+            </label>
+            <label>
+              Status
+              <select id="statusColumn"></select>
+            </label>
+            <label>
+              Change type
+              <select id="changeTypeColumn"></select>
+            </label>
+            <label>
+              Risk level
+              <select id="riskLevelColumn"></select>
+            </label>
+            <label>
+              Planned start
+              <select id="plannedStartColumn"></select>
+            </label>
+            <label>
+              Planned end
+              <select id="plannedEndColumn"></select>
+            </label>
+            <label>
+              Change start
+              <select id="actualStartColumn"></select>
+            </label>
+            <label>
+              Completed date
+              <select id="completedDateColumn"></select>
+            </label>
+            <label>
+              Submitted date
+              <select id="submittedDateColumn"></select>
+            </label>
+            <label>
+              Change ID
+              <select id="idColumn"></select>
+            </label>
+            <label>
+              Change title
+              <select id="titleColumn"></select>
+            </label>
+          </div>
+
+          <div id="filterPanel" class="filter-panel is-disabled">
+            <div class="panel-heading">
+              <h2>Dashboard Filters</h2>
+              <span id="filteredRowCount">All rows</span>
+            </div>
+            <label>
+              Team
+              <select id="teamFilter"></select>
+            </label>
+            <label>
+              Status
+              <select id="statusFilter"></select>
+            </label>
+            <label>
+              Change type
+              <select id="changeTypeFilter"></select>
+            </label>
+            <label>
+              Risk level
+              <select id="riskLevelFilter"></select>
+            </label>
+            <button id="clearFilters" class="ghost-button filter-clear" type="button" disabled>
+              <span aria-hidden="true">X</span>
+              <span>Clear Filters</span>
+            </button>
+          </div>
+
+          <div id="insightsPanel" class="insights-panel">
+            <h2>Findings</h2>
+            <p id="primaryFinding">Upload a file to generate portfolio findings.</p>
+            <p id="timelineFinding"></p>
+            <p id="qualityFinding"></p>
+          </div>
+        </aside>
+
+        <section class="dashboard">
+          <div id="dashboardContent" class="dashboard-content" hidden>
+            <section class="kpi-grid" aria-label="Portfolio metrics">
+              <article class="kpi-card">
+                <span>Total Changes</span>
+                <button id="totalChanges" class="metric-button" type="button" title="View all changes">0</button>
+              </article>
+              <article class="kpi-card">
+                <span>Completed</span>
+                <button id="completedChanges" class="metric-button" type="button" title="View completed changes">0</button>
+              </article>
+              <article class="kpi-card">
+                <span>Finished On Time</span>
+                <button id="onTimeRate" class="metric-button" type="button" title="View changes finished on time">0%</button>
+              </article>
+              <article class="kpi-card danger">
+                <span>Outside Timeline</span>
+                <button id="overdueChanges" class="metric-button" type="button" title="View timeline exceptions">0</button>
+              </article>
+              <article class="kpi-card warning">
+                <span>Late CAB Submissions</span>
+                <button id="lateSubmissionTotal" class="metric-button" type="button" title="View late CAB submissions">0</button>
+              </article>
+            </section>
+
+            <section class="chart-grid">
+              <article class="chart-panel chart-panel-wide">
+                <div class="panel-heading">
+                  <h2>Planned End vs Completed Timeline</h2>
+                  <span id="timelineRange"></span>
+                </div>
+                <div id="timelineChart" class="chart"></div>
+              </article>
+              <article class="chart-panel">
+                <div class="panel-heading">
+                  <h2>Changes by Team</h2>
+                  <span>Top teams</span>
+                </div>
+                <div id="teamVolumeChart" class="chart"></div>
+              </article>
+              <article class="chart-panel">
+                <div class="panel-heading">
+                  <h2>Not Completed by Team</h2>
+                  <span>Open status</span>
+                </div>
+                <div id="notCompletedTeamChart" class="chart"></div>
+              </article>
+              <article class="chart-panel">
+                <div class="panel-heading">
+                  <h2>Late CAB Submissions by Team</h2>
+                  <span>Normal only</span>
+                </div>
+                <div id="lateSubmissionChart" class="chart"></div>
+              </article>
+              <article class="chart-panel">
+                <div class="panel-heading">
+                  <h2>On-Time Finish Rate</h2>
+                  <span>Completed work</span>
+                </div>
+                <div id="onTimeChart" class="chart"></div>
+              </article>
+              <article class="chart-panel">
+                <div class="panel-heading">
+                  <h2>Status Mix</h2>
+                  <span>All changes</span>
+                </div>
+                <div id="statusChart" class="chart"></div>
+              </article>
+              <article class="chart-panel">
+                <div class="panel-heading">
+                  <h2>Change Type Mix</h2>
+                  <span>All changes</span>
+                </div>
+                <div id="changeTypeChart" class="chart"></div>
+              </article>
+              <article class="chart-panel">
+                <div class="panel-heading">
+                  <h2>Risk Level Mix</h2>
+                  <span>Low / Medium / High</span>
+                </div>
+                <div id="riskLevelChart" class="chart"></div>
+              </article>
+            </section>
+
+            <section id="detailPanel" class="report-section detail-panel" hidden>
+              <div class="panel-heading detail-heading">
+                <div>
+                  <h2 id="detailTitle">Changes</h2>
+                  <span id="detailSummary">0 changes</span>
+                </div>
+                <div class="detail-actions">
+                  <button id="exportDetails" class="ghost-button" type="button" title="Export visible changes">
+                    <span aria-hidden="true">↓</span>
+                    <span>Export</span>
+                  </button>
+                  <button id="closeDetails" class="ghost-button" type="button" title="Close details">
+                    <span aria-hidden="true">×</span>
+                    <span>Close</span>
+                  </button>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table class="detail-table">
+                  <thead>
+                    <tr>
+                      <th>Key</th>
+                      <th>Summary</th>
+                      <th>Team</th>
+                      <th>Status</th>
+                      <th>Type</th>
+                      <th>Risk</th>
+                      <th>Submitted</th>
+                      <th>CAB Call</th>
+                      <th>CAB Cutoff</th>
+                      <th>Planned Start</th>
+                      <th>Planned End</th>
+                      <th>Change Start</th>
+                      <th>Completed</th>
+                      <th>Exception</th>
+                    </tr>
+                  </thead>
+                  <tbody id="detailBody"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="report-section">
+              <div class="panel-heading">
+                <h2>Team Report</h2>
+                <span id="reportSummary"></span>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Team</th>
+                      <th>Total</th>
+                      <th>Completed</th>
+                      <th>Completion</th>
+                      <th>Finished On Time</th>
+                      <th>Late Finish</th>
+                      <th>Late CAB Submissions</th>
+                      <th>Open Past Plan</th>
+                      <th>Outside Timeline</th>
+                      <th>Avg Delay</th>
+                    </tr>
+                  </thead>
+                  <tbody id="teamReportBody"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="report-section">
+              <div class="panel-heading">
+                <h2>Timeline Exceptions</h2>
+                <span>Largest misses</span>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Change</th>
+                      <th>Team</th>
+                      <th>Status</th>
+                      <th>Planned End</th>
+                      <th>Completed</th>
+                      <th>Exception</th>
+                      <th>Delay</th>
+                    </tr>
+                  </thead>
+                  <tbody id="delayedBody"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
